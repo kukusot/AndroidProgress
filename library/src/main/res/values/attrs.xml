@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="DotsProgressView">
+        <attr name="circleColor" format="color"/>
+        <attr name="circleRadius" format="dimension"/>
+        <attr name="circleSpacing" format="dimension"/>
+        <attr name="circleTravel" format="dimension"/>
+    </declare-styleable>
+
+</resources>
