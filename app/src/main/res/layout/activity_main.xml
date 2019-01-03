@@ -32,4 +32,14 @@
                                             app:numDots="8"
                                             app:circleColor="@color/colorPrimary"/>
 
+
+    <kukusot.progress.SquareDotsLoadingView android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            app:circleRadius="3dp"
+                                            app:animationDuration="1500"
+                                            app:radius="30dp"
+                                            app:numDots="5"
+                                            app:circleColor="@color/colorAccent"/>
+
 </LinearLayout>
