@@ -11,7 +11,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 
-private const val FRAME_TIME = 1000 / 60
 private const val ANIMATION_DURATION = 500L
 
 class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
@@ -82,7 +81,7 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(con
 
     private fun safeInvalidate() {
         val now = System.currentTimeMillis()
-        if (now - latInvalidateTime > FRAME_TIME) {
+        if (now - latInvalidateTime > FRAME_DURATION) {
             latInvalidateTime = now
             invalidate()
         }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".MainActivity">
 
     <kukusot.progress.DotsProgressView
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
             app:circleColor="@color/colorPrimaryDark"
             app:circleRadius="6dp"
             app:circleSpacing="3dp"
@@ -19,4 +23,12 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-</android.support.constraint.ConstraintLayout>
+
+    <kukusot.progress.WindowsLoadingView android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_gravity="center_horizontal"
+                                         app:circleRadius="4dp"
+                                         app:radius="40dp"
+                                         app:circleColor="@color/colorPrimary"/>
+
+</LinearLayout>
