@@ -24,11 +24,12 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
 
-    <kukusot.progress.WindowsLoadingView android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         android:layout_gravity="center_horizontal"
-                                         app:circleRadius="4dp"
-                                         app:radius="40dp"
-                                         app:circleColor="@color/colorPrimary"/>
+    <kukusot.progress.SquareDotsLoadingView android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            app:circleRadius="4dp"
+                                            app:radius="40dp"
+                                            app:numDots="8"
+                                            app:circleColor="@color/colorPrimary"/>
 
 </LinearLayout>

@@ -3,6 +3,8 @@
 
     <attr name="circleColor" format="color"/>
     <attr name="circleRadius" format="dimension"/>
+    <attr name="numDots" format="integer"/>
+    <attr name="animationDuration" format="integer"/>
 
     <declare-styleable name="DotsProgressView">
         <attr name="circleColor"/>
@@ -12,9 +14,11 @@
     </declare-styleable>
 
 
-    <declare-styleable name="WindowsLoadingView">
+    <declare-styleable name="SquareDotsLoadingView">
+        <attr name="animationDuration"/>
         <attr name="circleColor"/>
         <attr name="circleRadius"/>
+        <attr name="numDots"/>
         <attr name="radius" format="dimension"/>
     </declare-styleable>
 

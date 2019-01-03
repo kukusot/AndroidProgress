@@ -10,13 +10,15 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 
-class WindowsLoadingView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
+class SquareDotsLoadingView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
     var circleRadius: Float
     var radius: Float
     var circleColor: Int
     val rSqaured: Double
     var size: Float
+    val numDots: Int
+    val animationDuration: Long
 
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -26,12 +28,14 @@ class WindowsLoadingView(context: Context, attrs: AttributeSet? = null) : View(c
 
 
     init {
-        val attrSet = context.obtainStyledAttributes(attrs, R.styleable.WindowsLoadingView)
+        val attrSet = context.obtainStyledAttributes(attrs, R.styleable.SquareDotsLoadingView)
         with(attrSet) {
-            circleRadius = getDimension(R.styleable.WindowsLoadingView_circleRadius, 24f)
-            radius = getDimension(R.styleable.WindowsLoadingView_radius, 100f)
+            circleRadius = getDimension(R.styleable.SquareDotsLoadingView_circleRadius, 24f)
+            radius = getDimension(R.styleable.SquareDotsLoadingView_radius, 100f)
             rSqaured = (radius * radius).toDouble()
-            circleColor = getColor(R.styleable.WindowsLoadingView_circleColor, Color.BLACK)
+            circleColor = getColor(R.styleable.SquareDotsLoadingView_circleColor, Color.BLACK)
+            numDots = getInt(R.styleable.SquareDotsLoadingView_numDots, 6)
+            animationDuration = getInt(R.styleable.SquareDotsLoadingView_animationDuration, 2000).toLong()
             paint.color = circleColor
             size = radius * 2 + circleRadius * 2
             recycle()
@@ -40,11 +44,11 @@ class WindowsLoadingView(context: Context, attrs: AttributeSet? = null) : View(c
         }
     }
 
-    fun createDots() {
+    private fun createDots() {
         var startOffset = 0L
         var animatorList = arrayListOf<ValueAnimator?>()
-        var animatorArray = arrayOfNulls<ValueAnimator>(12)
-        for (i in 0 until 6) {
+        var animatorArray = arrayOfNulls<ValueAnimator>(numDots * 2)
+        for (i in 0 until numDots) {
             animatorList.addAll(createDots(startOffset))
             startOffset += 100
         }
@@ -61,7 +65,7 @@ class WindowsLoadingView(context: Context, attrs: AttributeSet? = null) : View(c
         val yAnimator = ValueAnimator.ofFloat(circleRadius, size - circleRadius, circleRadius)
         yAnimator.startDelay = startOffset
         yAnimator.interpolator = AccelerateDecelerateInterpolator()
-        yAnimator.duration = 2000
+        yAnimator.duration = animationDuration
 
         yAnimator.repeatCount = ValueAnimator.INFINITE
         yAnimator.addUpdateListener {
@@ -74,7 +78,7 @@ class WindowsLoadingView(context: Context, attrs: AttributeSet? = null) : View(c
         val xAnimator = ValueAnimator.ofFloat(centerX, size - circleRadius, centerX, circleRadius, centerX)
         xAnimator.startDelay = startOffset
         xAnimator.interpolator = AccelerateDecelerateInterpolator()
-        xAnimator.duration = 2000
+        xAnimator.duration = animationDuration
 
         xAnimator.repeatCount = ValueAnimator.INFINITE
         xAnimator.addUpdateListener {
