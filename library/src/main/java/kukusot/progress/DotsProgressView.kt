@@ -11,8 +11,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 
-private const val ANIMATION_DURATION = 500L
-
 class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
     private var latInvalidateTime = 0L
@@ -22,6 +20,7 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(con
     private var circleSpacing: Float
     private var circleTravel: Float
     private var startY: Float = 0f
+    private val animationDuration: Long
 
 
     private val xCenters: Array<Float>
@@ -39,6 +38,8 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(con
             circleSpacing = getDimension(R.styleable.DotsProgressView_circleSpacing, 10f)
             circleTravel = getDimension(R.styleable.DotsProgressView_circleTravel, 30f)
             paint.color = getColor(R.styleable.DotsProgressView_circleColor, Color.BLACK)
+            animationDuration = getInt(R.styleable.DotsProgressView_animationDuration, 1000).toLong()
+
             recycle()
         }
 
@@ -112,14 +113,14 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(con
             override fun onAnimationEnd(animation: Animator?) {
                 postDelayed({
                     dotsAnimator.start()
-                }, ANIMATION_DURATION)
+                }, animationDuration)
             }
         })
     }
 
     private fun createAnimator(startOffSet: Long, circleIndex: Int) =
         ValueAnimator.ofFloat(startY, startY - circleTravel, startY).apply {
-            duration = ANIMATION_DURATION
+            duration = animationDuration
             startDelay = startOffSet
             addUpdateListener {
                 yCenters[circleIndex] = it.animatedValue as Float

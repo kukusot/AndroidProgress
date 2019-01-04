@@ -9,6 +9,7 @@
     <declare-styleable name="DotsProgressView">
         <attr name="circleColor"/>
         <attr name="circleRadius"/>
+        <attr name="animationDuration"/>
         <attr name="circleSpacing" format="dimension"/>
         <attr name="circleTravel" format="dimension"/>
     </declare-styleable>

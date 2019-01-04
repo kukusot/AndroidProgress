@@ -1,5 +1,6 @@
 package kukusot.progress
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
@@ -10,20 +11,18 @@ import kukusot.progress.base.Dot
 
 class SquareDotsLoadingView(context: Context, attrs: AttributeSet? = null) : BaseProgressView(context, attrs) {
 
-    var circleRadius: Float
-    var radius: Float
-    var circleColor: Int
-    val rSqaured: Double
-    var size: Float
-    val numDots: Int
-    val animationDuration: Long
+    private val circleRadius: Float
+    private val radius: Float
+    private val circleColor: Int
+    private val size: Float
+    private val numDots: Int
+    private val animationDuration: Long
 
     init {
         val attrSet = context.obtainStyledAttributes(attrs, R.styleable.SquareDotsLoadingView)
         with(attrSet) {
             circleRadius = getDimension(R.styleable.SquareDotsLoadingView_circleRadius, 24f)
             radius = getDimension(R.styleable.SquareDotsLoadingView_radius, 100f)
-            rSqaured = (radius * radius).toDouble()
             circleColor = getColor(R.styleable.SquareDotsLoadingView_circleColor, Color.BLACK)
             numDots = getInt(R.styleable.SquareDotsLoadingView_numDots, 6)
             animationDuration = getInt(R.styleable.SquareDotsLoadingView_animationDuration, 2000).toLong()
@@ -35,23 +34,22 @@ class SquareDotsLoadingView(context: Context, attrs: AttributeSet? = null) : Bas
         createDots()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun createDots() {
         var startOffset = 0L
         val animatorList = arrayListOf<ValueAnimator?>()
         for (i in 0 until numDots) {
-            animatorList.addAll(createDots(startOffset))
+            animatorList.addAll(createAnimators(startOffset))
             startOffset += 100
         }
 
         animatorSet.apply {
-            val animatorArray = arrayOfNulls<ValueAnimator>(numDots * 2)
-            animatorList.toArray(animatorArray)
-            playTogether(*animatorArray)
+            playTogether(animatorList as Collection<Animator>?)
             start()
         }
     }
 
-    private fun createDots(startOffset: Long): Array<ValueAnimator?> {
+    private fun createAnimators(startOffset: Long): List<ValueAnimator> {
         val dotY = circleRadius
         val dot = Dot(size / 2, dotY, circleRadius)
         dots.add(dot)
@@ -66,10 +64,8 @@ class SquareDotsLoadingView(context: Context, attrs: AttributeSet? = null) : Bas
             dot.x = it
             postInvalidate()
         }
-        return arrayOfNulls<ValueAnimator>(2).apply {
-            this[0] = yAnimator
-            this[1] = xAnimator
-        }
+
+        return listOf(yAnimator, xAnimator)
     }
 
     private fun createValueAnimator(
