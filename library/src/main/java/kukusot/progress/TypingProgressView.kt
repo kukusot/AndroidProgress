@@ -6,11 +6,10 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import kukusot.progress.base.BaseProgressView
 import kukusot.progress.base.Dot
 
-class DotsProgressView(context: Context, attrs: AttributeSet? = null) : BaseProgressView(context, attrs) {
+class TypingProgressView(context: Context, attrs: AttributeSet? = null) : BaseProgressView(context, attrs) {
 
     private var circleRadius: Float
     private var circleSpacing: Float
@@ -22,14 +21,14 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : BaseProg
     private val calculatedHeight: Int
 
     init {
-        val attrSet = context.obtainStyledAttributes(attrs, R.styleable.DotsProgressView)
+        val attrSet = context.obtainStyledAttributes(attrs, R.styleable.TypingProgressView)
         with(attrSet) {
-            circleRadius = getDimension(R.styleable.DotsProgressView_circleRadius, 24f)
-            circleSpacing = getDimension(R.styleable.DotsProgressView_circleSpacing, 10f)
-            circleTravel = getDimension(R.styleable.DotsProgressView_circleTravel, 30f)
-            paint.color = getColor(R.styleable.DotsProgressView_circleColor, Color.BLACK)
-            numDots = getInt(R.styleable.DotsProgressView_numDots, 3)
-            animationDuration = getInt(R.styleable.DotsProgressView_animationDuration, 2500).toLong()
+            circleRadius = getDimension(R.styleable.TypingProgressView_circleRadius, 24f)
+            circleSpacing = getDimension(R.styleable.TypingProgressView_circleSpacing, 10f)
+            circleTravel = getDimension(R.styleable.TypingProgressView_circleTravel, 30f)
+            paint.color = getColor(R.styleable.TypingProgressView_circleColor, Color.BLACK)
+            numDots = getInt(R.styleable.TypingProgressView_numDots, 3)
+            animationDuration = getInt(R.styleable.TypingProgressView_animationDuration, 2500).toLong()
             dotAnimationDuration = animationDuration / numDots
 
             recycle()

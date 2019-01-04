@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 
 
@@ -34,18 +33,9 @@ abstract class BaseProgressView(context: Context, attrs: AttributeSet? = null) :
         }
     }
 
-    var drawCount = 0
-    var lastDrawTime = System.currentTimeMillis()
-
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         dots.forEach { it.draw(canvas, paint) }
-        drawCount++
-        if (System.currentTimeMillis() - lastDrawTime >= 1000) {
-            lastDrawTime = System.currentTimeMillis()
-            Log.e("DrawCalls", " " + drawCount + " " + javaClass.canonicalName)
-            drawCount = 0
-        }
     }
 
 }
