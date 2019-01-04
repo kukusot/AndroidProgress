@@ -2,34 +2,24 @@ package kukusot.progress
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
 import android.util.AttributeSet
-import android.view.View
+import android.util.Log
+import kukusot.progress.base.BaseProgressView
+import kukusot.progress.base.Dot
 
-class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
-
-    private var latInvalidateTime = 0L
-    private var numDots = 3
+class DotsProgressView(context: Context, attrs: AttributeSet? = null) : BaseProgressView(context, attrs) {
 
     private var circleRadius: Float
     private var circleSpacing: Float
     private var circleTravel: Float
-    private var startY: Float = 0f
     private val animationDuration: Long
-
-
-    private val xCenters: Array<Float>
-    private val yCenters: Array<Float>
+    private val dotAnimationDuration: Long
+    private val numDots: Int
 
     private val calculatedHeight: Int
-
-    private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-
 
     init {
         val attrSet = context.obtainStyledAttributes(attrs, R.styleable.DotsProgressView)
@@ -38,98 +28,55 @@ class DotsProgressView(context: Context, attrs: AttributeSet? = null) : View(con
             circleSpacing = getDimension(R.styleable.DotsProgressView_circleSpacing, 10f)
             circleTravel = getDimension(R.styleable.DotsProgressView_circleTravel, 30f)
             paint.color = getColor(R.styleable.DotsProgressView_circleColor, Color.BLACK)
-            animationDuration = getInt(R.styleable.DotsProgressView_animationDuration, 1000).toLong()
+            numDots = getInt(R.styleable.DotsProgressView_numDots, 3)
+            animationDuration = getInt(R.styleable.DotsProgressView_animationDuration, 2500).toLong()
+            dotAnimationDuration = animationDuration / numDots
 
             recycle()
         }
 
-        val c1x: Float = circleRadius
-        val c2x: Float = c1x + circleSpacing + (circleRadius * 2)
-        val c3x: Float = c2x + circleSpacing + (circleRadius * 2)
-        xCenters = arrayOf(c1x, c2x, c3x)
-
         calculatedHeight = (circleRadius * 2 + circleTravel).toInt()
-        startY = calculatedHeight - circleRadius
-        yCenters = arrayOf(startY, startY, startY)
+        val startY = calculatedHeight - circleRadius
+        var dotX = circleRadius
+        for (i in 0 until numDots) {
+            dots.add(Dot(dotX, startY, circleRadius))
+            dotX += circleSpacing + (circleRadius * 2)
+        }
+
+        initiateDotsAnimators()
     }
-
-    lateinit var dotsAnimator: AnimatorSet
-
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val calculatedWidth = ((circleRadius * 2 * numDots) + (circleSpacing * (numDots - 1))).toInt()
+        val calculatedWidth = (dots.last().x + circleRadius).toInt()
 
         setMeasuredDimension(calculatedWidth, calculatedHeight)
-        initAnimator()
     }
 
-    override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
+
+    private fun initiateDotsAnimators() {
+        var starOffset = 0L
+        val animators = arrayListOf<ValueAnimator>()
         for (i in 0 until numDots) {
-            yCenters[i] = startY
+            val dot = dots[i]
+            animators.add(ValueAnimator.ofFloat(dot.y, circleTravel, dot.y).apply {
+                duration = (dotAnimationDuration * 0.8).toLong()
+                startDelay = starOffset
+                starOffset += 100
+                addUpdateListener {
+                    dot.y = it.animatedValue as Float
+                    postInvalidate()
+                }
+            })
         }
 
-        if (!::dotsAnimator.isInitialized && !isAttachedToWindow) {
-            return
+        animatorSet.apply {
+            playTogether(animators as Collection<Animator>?)
+            start()
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    start()
+                }
+            })
         }
-
-        if (visibility == VISIBLE) {
-            dotsAnimator.start()
-        } else {
-            dotsAnimator.cancel()
-        }
-    }
-
-    private fun safeInvalidate() {
-        val now = System.currentTimeMillis()
-        if (now - latInvalidateTime > FRAME_DURATION) {
-            latInvalidateTime = now
-            invalidate()
-        }
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        with(canvas) {
-            for (i in 0 until numDots) {
-                val cx = xCenters[i]
-                val cy = yCenters[i]
-                drawCircle(cx, cy, circleRadius, paint)
-            }
-        }
-    }
-
-    private fun initAnimator() {
-        val c1yAnimator = createAnimator(0, 0)
-        val c2yAnimator = createAnimator(100, 1)
-        val c3yAnimator = createAnimator(200, 2)
-
-        dotsAnimator = AnimatorSet()
-        dotsAnimator.playTogether(c1yAnimator, c2yAnimator, c3yAnimator)
-        dotsAnimator.start()
-
-        dotsAnimator.addListener(object : AnimatorListenerAdapter() {
-
-            override fun onAnimationEnd(animation: Animator?) {
-                postDelayed({
-                    dotsAnimator.start()
-                }, animationDuration)
-            }
-        })
-    }
-
-    private fun createAnimator(startOffSet: Long, circleIndex: Int) =
-        ValueAnimator.ofFloat(startY, startY - circleTravel, startY).apply {
-            duration = animationDuration
-            startDelay = startOffSet
-            addUpdateListener {
-                yCenters[circleIndex] = it.animatedValue as Float
-                safeInvalidate()
-            }
-        }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        dotsAnimator.cancel()
     }
 }
