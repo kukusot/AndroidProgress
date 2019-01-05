@@ -12,6 +12,10 @@ A progress bar that can be used to indicate when chat partner is typing.
 
 Custom loading animation
 
+## WindowsLoadingView
+
+Similar loading animation to Windows 10 loading animation
+
 ## Usage
 
 All configuration needs to be defined in the xml layout.
