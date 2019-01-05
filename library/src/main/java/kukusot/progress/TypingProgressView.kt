@@ -57,7 +57,7 @@ class TypingProgressView(context: Context, attrs: AttributeSet? = null) : BasePr
         val animators = arrayListOf<ValueAnimator>()
         for (i in 0 until numDots) {
             val dot = dots[i]
-            animators.add(ValueAnimator.ofFloat(dot.y, circleTravel, dot.y).apply {
+            animators.add(ValueAnimator.ofFloat(dot.y, circleRadius, dot.y).apply {
                 duration = (dotAnimationDuration * 0.8).toLong()
                 startDelay = starOffset
                 starOffset += 100
