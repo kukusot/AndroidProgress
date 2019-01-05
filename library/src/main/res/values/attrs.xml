@@ -5,6 +5,7 @@
     <attr name="circleRadius" format="dimension"/>
     <attr name="numDots" format="integer"/>
     <attr name="animationDuration" format="integer"/>
+    <attr name="radius" format="dimension"/>
 
     <declare-styleable name="TypingProgressView">
         <attr name="circleColor"/>
@@ -21,7 +22,15 @@
         <attr name="circleColor"/>
         <attr name="circleRadius"/>
         <attr name="numDots"/>
-        <attr name="radius" format="dimension"/>
+        <attr name="radius"/>
+    </declare-styleable>
+
+    <declare-styleable name="WindowsLoadingView">
+        <attr name="animationDuration"/>
+        <attr name="circleColor"/>
+        <attr name="circleRadius"/>
+        <attr name="numDots"/>
+        <attr name="radius"/>
     </declare-styleable>
 
 </resources>
