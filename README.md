@@ -30,6 +30,19 @@ In future versions, I will add the ability to configure the views programmatical
 ```
 
 ```xml
+  <kukusot.progress.WindowsLoadingView android:layout_width="wrap_content"
+                                         android:layout_height="wrap_content"
+                                         android:layout_marginBottom="16dp"
+                                         android:layout_marginTop="16dp"
+                                         android:layout_gravity="center_horizontal"
+                                         app:circleRadius="3dp"
+                                         app:animationDuration="1500"
+                                         app:radius="30dp"
+                                         app:numDots="6"
+                                         app:circleColor="@color/colorAccent"/>
+```
+
+```xml
    <kukusot.progress.SquareDotsLoadingView android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             app:circleRadius="4dp"
