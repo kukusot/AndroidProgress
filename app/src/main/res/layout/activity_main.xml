@@ -19,11 +19,16 @@
             app:numDots="3"
             app:animationDuration="2000"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="wrap_content"/>
+
+
+    <kukusot.progress.TypingProgressView
+            android:id="@+id/typingDynamic"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     <kukusot.progress.WindowsLoadingView android:layout_width="wrap_content"
                                          android:layout_height="wrap_content"
@@ -44,8 +49,18 @@
                                             android:layout_marginTop="16dp"
                                             app:circleRadius="4dp"
                                             app:radius="40dp"
-                                            app:numDots="8"
+                                            app:numDots="6"
                                             app:circleColor="@color/colorPrimary"/>
+
+
+    <kukusot.progress.ExpandingCirclesView android:layout_width="wrap_content"
+                                           android:layout_height="wrap_content"
+                                           android:layout_gravity="center_horizontal"
+                                           android:layout_marginBottom="16dp"
+                                           android:layout_marginTop="16dp"
+                                           app:circleRadius="4dp"
+                                           app:radius="40dp"
+                                           app:circleColor="@color/colorPrimary"/>
 
 
 </LinearLayout>
